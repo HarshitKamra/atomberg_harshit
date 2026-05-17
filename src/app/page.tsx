@@ -1,10 +1,6 @@
 import { redirect } from "next/navigation";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth-options";
-import { roleDashboardPath } from "@/lib/auth";
 
-export default async function Home() {
-  const session = await getServerSession(authOptions);
-  if (!session?.user) redirect("/login");
-  redirect(roleDashboardPath(session.user.role));
+/** Always land on login so the shared demo URL shows the sign-in screen */
+export default function Home() {
+  redirect("/login");
 }

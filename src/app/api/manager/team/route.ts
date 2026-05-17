@@ -30,9 +30,9 @@ export async function GET() {
     const team = reports.map((emp) => {
       const sheet = emp.goalSheets[0];
       const scores =
-        sheet?.goals.flatMap((g) =>
-          g.checkIns.map((c) => c.progressScore ?? 0)
-        ) ?? [];
+        (sheet?.goals ?? []).flatMap((g) =>
+          (g.checkIns ?? []).map((c) => c.progressScore ?? 0)
+        );
       return {
         id: emp.id,
         name: emp.name,

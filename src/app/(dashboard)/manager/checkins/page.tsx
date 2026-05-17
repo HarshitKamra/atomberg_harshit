@@ -88,7 +88,7 @@ export default function ManagerCheckinsPage() {
           </CardContent>
         </Card>
         <div className="lg:col-span-2 space-y-4">
-          {sheet?.goals.map((goal) => {
+          {(sheet?.goals ?? []).map((goal) => {
             const ci = goal.checkIns[0];
             return (
               <Card key={goal.id}>

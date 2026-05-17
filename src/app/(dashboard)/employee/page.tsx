@@ -18,12 +18,21 @@ export default function EmployeeDashboard() {
   useEffect(() => {
     fetch("/api/goals")
       .then((r) => r.json())
-      .then(setData);
+      .then((json) => {
+        if (json.error) {
+          setData({ sheet: undefined, cycle: undefined });
+          return;
+        }
+        setData(json);
+      })
+      .catch(() => setData({ sheet: undefined, cycle: undefined }));
   }, []);
 
   const sheet = data?.sheet;
-  const scores =
-    sheet?.goals.flatMap((g) => g.checkIns.map((c) => c.progressScore ?? 0)) ?? [];
+  const goals = sheet?.goals ?? [];
+  const scores = goals.flatMap((g) =>
+    (g.checkIns ?? []).map((c) => c.progressScore ?? 0)
+  );
   const avg = scores.length ? scores.reduce((a, b) => a + b, 0) / scores.length : 0;
 
   return (
@@ -70,7 +79,7 @@ export default function EmployeeDashboard() {
             <Clock className="h-4 w-4 text-amber-500" />
           </CardHeader>
           <CardContent>
-            <p className="text-2xl font-bold">{sheet?.goals.length ?? 0}</p>
+            <p className="text-2xl font-bold">{goals.length}</p>
             <p className="text-xs text-slate-500">Active goals this cycle</p>
           </CardContent>
         </Card>

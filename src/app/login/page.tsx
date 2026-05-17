@@ -1,7 +1,7 @@
 "use client";
 
-import { signIn } from "next-auth/react";
-import { useState } from "react";
+import { signIn, getSession } from "next-auth/react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -13,12 +13,26 @@ const demoAccounts = [
   { role: "Admin", email: "admin@atomberg.com", icon: Shield },
 ];
 
+function dashboardForRole(role?: string) {
+  if (role === "ADMIN") return "/admin";
+  if (role === "MANAGER") return "/manager";
+  return "/employee";
+}
+
 export default function LoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("demo123");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    getSession().then((session) => {
+      if (session?.user) {
+        router.replace(dashboardForRole(session.user.role));
+      }
+    });
+  }, [router]);
 
   async function handleLogin(loginEmail?: string) {
     setLoading(true);
@@ -33,7 +47,8 @@ export default function LoginPage() {
       setError("Invalid credentials");
       return;
     }
-    router.push("/");
+    const session = await getSession();
+    router.replace(dashboardForRole(session?.user?.role));
     router.refresh();
   }
 

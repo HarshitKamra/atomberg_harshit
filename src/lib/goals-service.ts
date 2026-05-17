@@ -16,12 +16,18 @@ export async function getActiveCycle() {
 export async function getOrCreateGoalSheet(userId: string, cycleId: string) {
   let sheet = await prisma.goalSheet.findUnique({
     where: { userId_cycleId: { userId, cycleId } },
-    include: { goals: { orderBy: { sortOrder: "asc" } }, cycle: true },
+    include: {
+      goals: { orderBy: { sortOrder: "asc" }, include: { checkIns: true } },
+      cycle: true,
+    },
   });
   if (!sheet) {
     sheet = await prisma.goalSheet.create({
       data: { userId, cycleId },
-      include: { goals: { orderBy: { sortOrder: "asc" } }, cycle: true },
+      include: {
+        goals: { orderBy: { sortOrder: "asc" }, include: { checkIns: true } },
+        cycle: true,
+      },
     });
   }
   return sheet;

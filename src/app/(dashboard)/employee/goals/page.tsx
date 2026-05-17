@@ -21,7 +21,7 @@ export default function EmployeeGoalsPage() {
         id: data.sheet.id,
         status: data.sheet.status,
         isLocked: data.sheet.isLocked,
-        goals: data.sheet.goals.map((g: GoalDraft & { deadline?: string }) => ({
+        goals: (data.sheet.goals ?? []).map((g: GoalDraft & { deadline?: string }) => ({
           ...g,
           deadline: g.deadline ? new Date(g.deadline).toISOString() : null,
         })),
