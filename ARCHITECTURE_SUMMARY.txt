@@ -1,0 +1,677 @@
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                    ATOMGOALS — ARCHITECTURE OVERVIEW                          ║
+║                   Atomberg ATOMQUEST Hackathon 1.0                             ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SYSTEM OVERVIEW
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+AtomGoals is a full-stack web application deployed on a modern cloud-native 
+architecture. It consists of three main layers:
+
+    ┌─────────────────────────────────────────────────────────┐
+    │            CLIENT LAYER (Web Browser)                   │
+    │   Employee / Manager / Admin Dashboards                 │
+    └──────────────────────┬──────────────────────────────────┘
+                           │
+    ┌──────────────────────▼──────────────────────────────────┐
+    │        APPLICATION LAYER (Vercel Edge Network)          │
+    │  ┌──────────────────────────────────────────────────┐  │
+    │  │ Next.js 14 Frontend + React 18 Components        │  │
+    │  │ Tailwind CSS Styling + Recharts Analytics        │  │
+    │  └──────────────────────────────────────────────────┘  │
+    │  ┌──────────────────────────────────────────────────┐  │
+    │  │ NextAuth.js Authentication (JWT + Credentials)   │  │
+    │  └──────────────────────────────────────────────────┘  │
+    │  ┌──────────────────────────────────────────────────┐  │
+    │  │ Next.js API Routes (Serverless Functions)        │  │
+    │  │ • Goals Management, Manager Approvals             │  │
+    │  │ • Check-ins, Analytics, Reporting, Audit         │  │
+    │  └──────────────────────────────────────────────────┘  │
+    │  ┌──────────────────────────────────────────────────┐  │
+    │  │ Business Logic Layer                              │  │
+    │  │ • Goal Validation, Progress Scoring Engine        │  │
+    │  │ • Schedule Enforcement, Audit Trail              │  │
+    │  └──────────────────────────────────────────────────┘  │
+    └──────────────────────┬──────────────────────────────────┘
+                           │
+    ┌──────────────────────▼──────────────────────────────────┐
+    │         PERSISTENCE LAYER (Prisma ORM)                  │
+    │    Type-safe query builder + Auto-migrations            │
+    └──────────────────────┬──────────────────────────────────┘
+                           │
+    ┌──────────────────────▼──────────────────────────────────┐
+    │        DATA LAYER (Neon PostgreSQL)                     │
+    │    Managed Cloud Database with Connection Pooling       │
+    │    • Users & Departments                                │
+    │    • Goal Sheets & Goals (1-8 per employee)             │
+    │    • Quarterly Check-ins (Q1-Q4 progress tracking)      │
+    │    • Shared Goals (Departmental KPIs)                   │
+    │    • Audit Logs (Complete change history)               │
+    └──────────────────────────────────────────────────────────┘
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+TECHNOLOGY STACK
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+┌─────────────────────┬──────────────────────────────────────────────────────┐
+│ LAYER               │ TECHNOLOGY & JUSTIFICATION                            │
+├─────────────────────┼──────────────────────────────────────────────────────┤
+│ Frontend Framework  │ Next.js 14.2.35                                        │
+│                     │ → Full-stack framework, built-in API routes,          │
+│                     │   optimized for SSR/SSG, fast development cycle       │
+├─────────────────────┼──────────────────────────────────────────────────────┤
+│ UI Library          │ React 18                                               │
+│                     │ → Component-based, large ecosystem, team familiarity  │
+├─────────────────────┼──────────────────────────────────────────────────────┤
+│ Styling             │ Tailwind CSS 3.4.19                                    │
+│                     │ → Utility-first, rapid prototyping, responsive design │
+├─────────────────────┼──────────────────────────────────────────────────────┤
+│ Charts & Analytics  │ Recharts 3.8.1                                         │
+│                     │ → Production-grade, responsive, interactive visuals   │
+├─────────────────────┼──────────────────────────────────────────────────────┤
+│ Backend             │ Next.js API Routes (Serverless)                       │
+│                     │ → No separate server, auto-scaling, pay-per-request   │
+├─────────────────────┼──────────────────────────────────────────────────────┤
+│ Authentication      │ NextAuth.js 4.24.14                                    │
+│                     │ → Industry-standard, JWT support, secure sessions     │
+├─────────────────────┼──────────────────────────────────────────────────────┤
+│ Database            │ PostgreSQL 14+ (Neon Cloud)                           │
+│                     │ → ACID compliance, relational queries, role-based AC  │
+├─────────────────────┼──────────────────────────────────────────────────────┤
+│ ORM                 │ Prisma 5.22.0                                          │
+│                     │ → Type-safe, schema-driven, auto-migrations, DX      │
+├─────────────────────┼──────────────────────────────────────────────────────┤
+│ File Export         │ SheetJS (xlsx) 0.18.5                                  │
+│                     │ → CSV & XLSX generation, streaming for large files    │
+├─────────────────────┼──────────────────────────────────────────────────────┤
+│ Password Hashing    │ bcryptjs 3.0.3                                         │
+│                     │ → Salted hashing, configurable rounds (10 default)    │
+├─────────────────────┼──────────────────────────────────────────────────────┤
+│ Hosting             │ Vercel                                                 │
+│                     │ → Optimized for Next.js, auto-deploy, global CDN      │
+├─────────────────────┼──────────────────────────────────────────────────────┤
+│ Runtime             │ Node.js 18+                                            │
+│                     │ → LTS version, excellent npm ecosystem support        │
+└─────────────────────┴──────────────────────────────────────────────────────┘
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+CORE COMPONENTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. FRONTEND COMPONENTS
+   ├── Employee Dashboard
+   │   ├── My Dashboard (Overview)
+   │   ├── My Goals & Tasks (Create, edit, submit)
+   │   └── Quarterly Check-ins (Track progress)
+   ├── Manager Dashboard
+   │   ├── Team Dashboard (Direct reports overview)
+   │   ├── Goal Approvals (Review & approve/reject)
+   │   └── Team Check-ins (Feedback on progress)
+   ├── Admin Dashboard
+   │   ├── HR Dashboard (Completion rates, analytics)
+   │   ├── User Management (Create, assign managers)
+   │   ├── Cycle Configuration (Toggle windows)
+   │   ├── Shared Goals Management (Departmental KPIs)
+   │   ├── Reports Export (CSV/XLSX)
+   │   └── Audit Trail (Complete change history)
+   └── Analytics Page
+       ├── QoQ Trend Lines
+       ├── Goal Distribution Charts
+       ├── Heatmaps (Employee progress)
+       └── Manager Effectiveness Dashboard
+
+2. API ENDPOINTS (Serverless Functions)
+   ├── Goal Management
+   │   ├── GET    /api/goals              → Fetch employee's goal sheet
+   │   ├── POST   /api/goals/save         → Save draft goals
+   │   └── POST   /api/goals/submit       → Submit for approval
+   ├── Check-ins
+   │   ├── GET    /api/checkins           → Fetch by quarter
+   │   └── POST   /api/checkins           → Save check-in + manager comment
+   ├── Manager Operations
+   │   ├── GET    /api/manager/team       → Team members + statuses
+   │   └── POST   /api/manager/approve    → Approve/reject goals
+   ├── Admin Operations
+   │   ├── GET    /api/admin/users        → List users
+   │   ├── GET    /api/admin/windows      → Cycles & check-in windows
+   │   ├── PATCH  /api/admin/windows      → Toggle windows
+   │   ├── GET    /api/admin/shared-goals → Departmental KPIs
+   │   ├── POST   /api/admin/shared-goals → Create shared goal
+   │   └── POST   /api/admin/unlock       → Unlock goal sheet
+   ├── Reporting
+   │   ├── GET    /api/analytics          → Trends, heatmaps, stats
+   │   ├── GET    /api/audit              → Audit trail
+   │   └── GET    /api/reports/export     → CSV/XLSX download
+
+3. BUSINESS LOGIC SERVICES
+   ├── Goals Service (goals-service.ts)
+   │   ├── getActiveCycle()                → Get current fiscal year
+   │   ├── getOrCreateGoalSheet()          → Fetch or create employee sheet
+   │   └── syncSharedAchievement()         → Sync to linked goals
+   ├── Progress Engine (progress.ts)
+   │   ├── calculateProgressScore()        → All 4 UoM formulas
+   │   └── averageProgress()               → QoQ calculations
+   ├── Schedule Enforcement (schedule.ts)
+   │   ├── isPeriodActive()                → Validate window
+   │   └── getCurrentPeriod()              → Get current quarter
+   ├── Audit Service (audit.ts)
+   │   └── logAudit()                      → Before/after snapshots
+   └── Validation Service (validations.ts)
+       └── validateGoals()                 → 100% weightage, min 10%, max 8
+
+4. DATABASE SCHEMA
+   ├── User                       → Employee/Manager/Admin users
+   ├── Department                 → Organizational units
+   ├── Cycle                       → Annual performance year
+   ├── CheckInWindow              → Quarterly windows (open/close dates)
+   ├── GoalSheet                  → 1-per-user-per-cycle container
+   ├── Goal                        → Individual goal (1-8 per sheet)
+   ├── SharedGoal                 → Departmental KPI (pushed to multiple)
+   ├── QuarterlyCheckIn           → Progress tracking (Q1-Q4)
+   ├── AuditLog                   → Complete change history
+   ├── Notification               → In-app alerts
+   └── Escalation                 → Workflow escalations
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+REQUEST/RESPONSE FLOW
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Example: Employee Creates & Submits Goals
+
+STEP 1: Client sends goal creation request
+  POST /api/goals/save
+  {
+    "goals": [
+      {
+        "thrustArea": "Revenue Growth",
+        "title": "Increase sales by 20%",
+        "uomType": "PERCENTAGE",
+        "uomDirection": "MIN",
+        "target": 20,
+        "weightage": 40
+      },
+      ... (2 more goals)
+    ]
+  }
+
+STEP 2: Middleware validates session
+  • Checks JWT token in secure cookie
+  • Verifies user is EMPLOYEE role
+  • Attaches session.user to request
+
+STEP 3: Backend API route handler
+  • Validates individual goal schema
+  • Calculates total weightage: 40 + 30 + 30 = 100% ✓
+  • Checks: each ≥ 10%? ✓, max 8 goals? ✓
+  • Fetches active cycle from DB
+
+STEP 4: Prisma ORM saves to database
+  CREATE GoalSheet (userId, cycleId, status='DRAFT')
+  CREATE 3 Goals (goalSheetId, ...)
+
+STEP 5: Server response
+  {
+    "status": "success",
+    "sheet": {
+      "id": "goal_sheet_123",
+      "status": "DRAFT",
+      "goals": [...]
+    }
+  }
+
+STEP 6: Client updates UI
+  • Shows success message
+  • Displays "Status: DRAFT"
+  • Enables "Submit for Approval" button
+
+STEP 7: Employee clicks "Submit for Approval"
+  POST /api/goals/submit
+  
+  • Backend re-validates complete sheet (100% = YES)
+  • Updates GoalSheet: status → "SUBMITTED"
+  • Creates Notification: userId = manager ID
+  • Logs AuditLog: action = "SUBMIT", afterData = {...}
+  
+  Response: { status: "success", sheet: { status: "SUBMITTED" } }
+
+STEP 8: Client updates UI
+  • Status changes to "SUBMITTED"
+  • "Submit" button disabled
+  • Message: "Waiting for manager approval"
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+AUTHENTICATION & AUTHORIZATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+LOGIN FLOW:
+  1. User enters email + password on /login page
+  2. Submits to NextAuth.js CredentialsProvider
+  3. Provider queries: User.findUnique(email)
+  4. bcryptjs compares password hash
+  5. If valid:
+     • Generate JWT token (NextAuth.js)
+     • Store in HTTP-only secure cookie
+     • User redirected to /employee (or /manager, /admin)
+  6. Session attached to all API requests automatically
+
+AUTHORIZATION:
+  • middleware.ts checks session on every dashboard page
+  • API routes use requireAuth(["EMPLOYEE", "MANAGER", "ADMIN"])
+  • Role mismatch → 403 Forbidden error
+  • Session data includes:
+    {
+      user: {
+        id: "user_123",
+        email: "emp@atomberg.com",
+        name: "Arjun Patel",
+        role: "EMPLOYEE",
+        departmentId: "eng_dept",
+        managerId: "mgr_456"
+      }
+    }
+
+ROLE-BASED ACCESS CONTROL:
+  EMPLOYEE can:
+    ✓ View own goals (when locked)
+    ✓ Create/edit/submit goals (pre-submission)
+    ✓ View own check-ins
+    ✓ Submit quarterly check-ins
+    ✗ Cannot approve other employees' goals
+    ✗ Cannot manage cycles or users
+
+  MANAGER can:
+    ✓ View direct reports (managerId = self)
+    ✓ Approve/reject direct reports' goals
+    ✓ Inline edit target/weightage during approval
+    ✓ Conduct check-ins for team members
+    ✓ Add comments to check-ins
+    ✓ View team analytics
+    ✗ Cannot approve goals for other departments
+    ✗ Cannot unlock goals (admin only)
+
+  ADMIN can:
+    ✓ View all users
+    ✓ Create/manage users
+    ✓ Assign managers to employees
+    ✓ Manage cycles (create, update)
+    ✓ Toggle quarterly windows (open/close)
+    ✓ Create shared goals (departmental KPIs)
+    ✓ Unlock goal sheets (exception handling)
+    ✓ View audit trail
+    ✓ Export reports
+    ✓ Modify any goal/sheet
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PROGRESS SCORING ENGINE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+When employee submits check-in with actual achievement, system auto-calculates 
+progress score using the goal's UoM (Unit of Measurement) type:
+
+1. MIN (Higher is Better)
+   Formula: (Actual ÷ Target) × 100
+   Used for: Revenue, Customer Satisfaction, Quality metrics
+   
+   Example:
+     Target: 100 units
+     Actual: 85 units
+     Score: (85 ÷ 100) × 100 = 85%
+
+2. MAX (Lower is Better)
+   Formula: (Target ÷ Actual) × 100
+   Used for: Cost, TAT (Turn Around Time), Error rates
+   
+   Example:
+     Target: 4 days TAT
+     Actual: 5 days
+     Score: (4 ÷ 5) × 100 = 80%
+
+3. TIMELINE (Deadline-based)
+   Formula: If completion_date ≤ deadline: Score = 100%
+           Else: Score = 100 - (overdue_days × 5), minimum 0%
+   Used for: Project completion, milestones
+   
+   Example:
+     Deadline: Dec 31, 2025
+     Actual completion: Jan 5, 2026 (5 days late)
+     Score: 100 - (5 × 5) = 75%
+
+4. ZERO-BASED (Binary Success)
+   Formula: If actual = 0: Score = 100%
+           Else: Score = 0%
+   Used for: Safety incidents, compliance violations
+   
+   Example:
+     Target: 0 safety incidents
+     Actual: 0 incidents
+     Score: 100%
+
+Aggregate Scoring:
+  • Employee average = Mean of all goal scores for that quarter
+  • Team average = Mean of all direct reports' scores
+  • Org average = Mean of all employee scores
+  • QoQ trend = Employee avg for Q1 vs Q2 vs Q3 vs Q4
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SCHEDULE ENFORCEMENT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+System enforces quarterly windows for actions:
+
+Period              Window Opens    API Behavior
+─────────────────────────────────────────────────────────────
+GOAL_SETTING        May 1           Can create/edit/submit goals
+                                   Cannot: check-ins
+Q1 Check-in         July 1          Can: submit Q1 check-ins
+                                   Cannot: edit goals, submit Q2
+Q2 Check-in         October 1       Can: submit Q2 check-ins
+Q3 Check-in         January 1       Can: submit Q3 check-ins
+Q4/Annual           March 1-        Can: submit Q4 check-ins
+                    April 30        Final achievement capture
+
+Outside active window:
+  POST /api/goals/submit → "Goal setting window is not active"
+  POST /api/checkins (Q1) → "Q1 check-in window is not closed"
+
+DEMO MODE (DEMO_MODE=true in .env):
+  • All windows always open
+  • Can create goals, check-ins anytime
+  • Useful for testing/presentations
+  • No schedule restrictions
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+DATABASE RELATIONSHIPS & CASCADING
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+User (1) ──────< (many) GoalSheet
+         ├── Cycle
+         ├── Department
+         └── Manager (self-referential for hierarchy)
+
+GoalSheet (1) ──────< (many) Goal
+
+Goal (1) ──────< (many) QuarterlyCheckIn
+    └─── SharedGoal (optional, for departmental KPIs)
+
+Cycle (1) ──────< (many) CheckInWindow
+
+ON DELETE CASCADE:
+  • Delete User → Delete all GoalSheets, Goals, CheckIns (soft delete via audit)
+  • Delete GoalSheet → Delete all Goals, QuarterlyCheckIns
+  • Delete Goal → Delete all QuarterlyCheckIns
+  • Delete Cycle → Delete all CheckInWindows, related GoalSheets
+
+AUDIT TRAIL:
+  • All changes to User, GoalSheet, Goal, QuarterlyCheckIn logged
+  • AuditLog stores: userId, action, beforeData (JSON), afterData (JSON), timestamp
+  • Tracks: CREATE, UPDATE, DELETE, SUBMIT, APPROVE, REJECT, UNLOCK, CHECK_IN
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+DEPLOYMENT ARCHITECTURE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+LOCAL DEVELOPMENT:
+  ┌──────────────────────────────────────────────┐
+  │ Developer Laptop                              │
+  ├──────────────────────────────────────────────┤
+  │ • Node.js 18+                                 │
+  │ • Next.js dev server (npm run dev)            │
+  │ • PostgreSQL (Docker: docker compose up -d)   │
+  │ • Prisma Studio (inspect DB)                  │
+  │ • Hot reload on file changes                  │
+  └──────────────────────────────────────────────┘
+           ↓
+  Access: http://localhost:3000
+
+PRODUCTION DEPLOYMENT:
+  Local Repository (Git)
+         ↓
+  GitHub Push (main branch)
+         ↓
+  GitHub Webhook triggers Vercel Build
+         ↓
+  Vercel CI/CD Pipeline:
+    1. npm install
+    2. prisma generate (types)
+    3. next build
+    4. Deploy to Vercel Edge Network (40+ regions)
+         ↓
+  Database migrations (automatic or manual):
+    • Prisma Migrate (if schema changed)
+    • Applied via build logs or Neon dashboard
+         ↓
+  Deployed Site:
+    • Frontend: https://YOUR_APP.vercel.app
+    • API: Same domain (serverless functions)
+    • Database: Connected to Neon PostgreSQL
+         ↓
+  Environment Variables (set in Vercel dashboard):
+    • DATABASE_URL
+    • NEXTAUTH_URL (e.g., https://YOUR_APP.vercel.app)
+    • NEXTAUTH_SECRET
+
+INFRASTRUCTURE:
+  ┌─────────────────────────────────────────────────────┐
+  │ Vercel (App + API)                                  │
+  │ • Serverless functions (auto-scaling)               │
+  │ • Global CDN (edge caching)                         │
+  │ • 40+ regions (low latency worldwide)               │
+  │ • SSL/TLS by default                                │
+  └─────────────────────────────────────────────────────┘
+                   ↓
+  ┌─────────────────────────────────────────────────────┐
+  │ Neon PostgreSQL (Cloud Database)                    │
+  │ • Managed PostgreSQL 14+                            │
+  │ • Connection pooling (handles 100s concurrent)      │
+  │ • Auto-backups (daily)                              │
+  │ • Free tier: 3GB storage                            │
+  │ • Branches (dev/staging/prod)                       │
+  └─────────────────────────────────────────────────────┘
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECURITY MEASURES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Authentication:
+  ✓ bcryptjs password hashing (salt rounds: 10)
+  ✓ JWT token generation (NextAuth.js)
+  ✓ HTTP-only secure cookies (no XSS exposure)
+  ✓ Session expiration (configurable)
+  ✓ CSRF protection (NextAuth built-in)
+
+Authorization:
+  ✓ Role-based access control (EMPLOYEE/MANAGER/ADMIN)
+  ✓ Row-level security via Prisma queries
+  ✓ Manager can only see direct reports
+  ✓ Employee can only see own data
+  ✓ API endpoint gating (requireAuth checks)
+
+Data Protection:
+  ✓ Audit trail logs all changes (before/after)
+  ✓ Soft deletes (retain history via audit)
+  ✓ Database connection encryption (Neon)
+  ✓ HTTPS/TLS for all traffic (Vercel + Neon)
+  ✓ Environment variables stored securely
+
+Code Security:
+  ✓ Input validation (Zod schemas)
+  ✓ SQL injection prevention (Prisma parameterized)
+  ✓ Error messages don't expose DB details
+  ✓ Rate limiting (Vercel built-in)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PERFORMANCE OPTIMIZATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Frontend:
+  • Next.js SSR (server-side rendering for fast first load)
+  • Code splitting (lazy loading of components)
+  • Image optimization (next/image)
+  • CSS-in-JS with Tailwind (minimal bundle)
+  • React Query-like patterns (useEffect caching)
+
+Backend:
+  • Prisma query optimization (select only needed fields)
+  • Database indexes on frequently queried columns
+    - User.managerId
+    - GoalSheet.userId_cycleId (composite)
+    - Goal.goalSheetId
+    - QuarterlyCheckIn.goalId_quarter (composite)
+  • Connection pooling (Neon handles 100s concurrent)
+  • Batch operations where possible
+
+Caching Strategy:
+  • Cycle data cached in-memory (rarely changes)
+  • Session data in JWT (no DB lookup per request)
+  • Static assets cached via CDN (Vercel edge)
+
+Database Queries:
+  • Fetch only active cycle (filter isActive = true)
+  • Use include: { goals: true } to batch fetch
+  • Avoid N+1 queries (eager loading relationships)
+  • Paginate large result sets (e.g., audit logs)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+MONITORING & LOGGING
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Error Handling:
+  • Try-catch in all API routes
+  • handleApiError() normalizes error responses
+  • User-friendly error messages on frontend
+  • Full stack trace logged server-side (Vercel logs)
+
+Audit Trail:
+  • Every change logged with before/after snapshots
+  • Timestamps on all records
+  • User attribution (who made the change)
+  • Queryable via /api/audit endpoint
+  • Admin can filter by action/user/date
+
+Performance Monitoring:
+  • Vercel Analytics (built-in, no extra setup)
+  • Monitor API response times
+  • Track database query duration
+  • Alert on 5xx error spikes
+  • Web Vitals (LCP, FID, CLS)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SCALABILITY CONSIDERATIONS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Current Architecture Supports:
+  • 10,000+ concurrent users (Vercel auto-scaling)
+  • 10,000+ employees (PostgreSQL handles easily)
+  • Millions of check-ins (indexed queries)
+  • Real-time analytics (aggregated in memory)
+
+Potential Bottlenecks & Solutions:
+
+1. Database Load
+   Current: PostgreSQL with indexes
+   Scaling: Add read replicas, implement caching layer (Redis)
+
+2. Large Exports
+   Current: Stream XLSX generation
+   Scaling: Background jobs (Vercel Cron), queue (Bull, Inngest)
+
+3. Real-time Notifications
+   Current: Polling via fetch
+   Scaling: WebSockets (Socket.io) or Server-Sent Events (SSE)
+
+4. Analytics Computation
+   Current: Query and aggregate per request
+   Scaling: Pre-compute, cache in Redis, background job
+
+5. File Storage
+   Current: None (exports generated on-the-fly)
+   Scaling: S3/Vercel Blob for historical exports
+
+Future Enhancements:
+  • Caching layer (Redis) for frequently accessed data
+  • Background jobs for heavy computations
+  • Search index (Algolia) for goal/employee search
+  • Real-time sync with WebSockets
+  • Mobile app (React Native sharing same API)
+  • Multi-tenancy support (multiple organizations)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+KEY ARCHITECTURAL DECISIONS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Full-Stack Framework (Next.js)
+   ✓ Eliminates need for separate backend server
+   ✓ API routes co-located with frontend code
+   ✓ Easier deployment (single platform)
+   ✗ Tight coupling (acceptable for this scope)
+
+2. Serverless Architecture (Vercel)
+   ✓ Auto-scaling without infrastructure management
+   ✓ Pay-per-use pricing model
+   ✓ Built-in CI/CD integration
+   ✗ Cold starts (mitigated by Next.js optimization)
+
+3. PostgreSQL (Relational Database)
+   ✓ ACID compliance for data integrity
+   ✓ Complex queries (analytics aggregations)
+   ✓ Foreign key relationships (enforce schema)
+   ✗ Less flexible than NoSQL (not needed here)
+
+4. JWT Authentication (Stateless)
+   ✓ No session storage required
+   ✓ Distributed system friendly
+   ✓ Microservices ready
+   ✗ Token revocation requires blacklist (acceptable for session duration)
+
+5. ORM over Raw SQL (Prisma)
+   ✓ Type safety (TypeScript integration)
+   ✓ Auto-migrations (schema versioning)
+   ✓ Query builder (less SQL boilerplate)
+   ✗ Performance penalty (negligible for this scale)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SUMMARY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+AtomGoals implements a modern, scalable, cloud-native architecture optimized for:
+
+✓ PERFORMANCE
+  • Fast initial page load (SSR + CDN)
+  • Optimized database queries (indexes, eager loading)
+  • Connection pooling (Neon)
+
+✓ SECURITY
+  • Role-based access control
+  • Encrypted sessions (JWT + HTTP-only cookies)
+  • Audit trail on all changes
+  • Password hashing (bcryptjs)
+
+✓ RELIABILITY
+  • ACID compliance (PostgreSQL)
+  • Automated backups (Neon)
+  • Error handling & logging
+  • Type safety (TypeScript)
+
+✓ MAINTAINABILITY
+  • Modular code organization
+  • Type-safe queries (Prisma)
+  • Clear separation of concerns
+  • Comprehensive documentation
+
+✓ SCALABILITY
+  • Auto-scaling infrastructure
+  • Connection pooling
+  • Optimized queries
+  • Ready for caching layer
+
+✓ COST EFFICIENCY
+  • Serverless (pay-per-use)
+  • No ops overhead
+  • Free Neon tier for small scale
+  • Vercel free tier available
+
+Developed for: Atomberg ATOMQUEST Hackathon 1.0
+Document Version: 1.0
+Date: May 17, 2026

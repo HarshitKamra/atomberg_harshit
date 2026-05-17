@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AtomGoals - Architecture Diagrams</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+            line-height: 1.6;
+            color: #333;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            border-bottom: 3px solid #4f46e5;
+            padding-bottom: 20px;
+        }
+        h1 {
+            color: #4f46e5;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            color: #666;
+            font-size: 1.1em;
+        }
+        .date {
+            color: #999;
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+        .diagram-section {
+            margin-bottom: 60px;
+            page-break-after: always;
+        }
+        .section-title {
+            color: #4f46e5;
+            font-size: 1.8em;
+            margin: 30px 0 20px 0;
+            border-left: 4px solid #4f46e5;
+            padding-left: 15px;
+        }
+        .description {
+            background: #f0f4ff;
+            border-left: 4px solid #4f46e5;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            color: #333;
+        }
+        .mermaid {
+            background: white;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+        .key-points {
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .key-points ul {
+            list-style-position: inside;
+            margin-left: 20px;
+        }
+        .key-points li {
+            margin: 8px 0;
+            color: #555;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background: #4f46e5;
+            color: white;
+            font-weight: bold;
+        }
+        tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            color: #999;
+            font-size: 0.9em;
+        }
+        .download-note {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 20px 0;
+            color: #856404;
+        }
+        .button-group {
+            text-align: center;
+            margin: 30px 0;
+        }
+        button {
+            background: #4f46e5;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 4px;
+            font-size: 1em;
+            cursor: pointer;
+            margin: 0 10px;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #4338ca;
+        }
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .container {
+                box-shadow: none;
+                padding: 20px;
+            }
+            .button-group {
+                display: none;
+            }
+            .download-note {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <h1>🏗️ AtomGoals System Architecture</h1>
+            <p class="subtitle">Enterprise Goal Setting & Tracking Portal</p>
+            <p class="subtitle">Atomberg ATOMQUEST Hackathon 1.0</p>
+            <p class="date">Document Generated: May 17, 2026</p>
+        </header>
+
+        <!-- Download Instructions -->
+        <div class="download-note">
+            <strong>💾 How to Download/Print:</strong>
+            <ul style="margin-top: 10px; margin-left: 20px;">
+                <li>📥 <strong>Save as PDF:</strong> Press <code>Ctrl+P</code> (or Cmd+P) → Choose "Save as PDF"</li>
+                <li>🖨️ <strong>Print:</strong> Press <code>Ctrl+P</code> → Select your printer</li>
+                <li>💾 <strong>Save HTML:</strong> Right-click → "Save as" (keeps original formatting)</li>
+            </ul>
+        </div>
+
+        <!-- Diagram 1: System Architecture -->
+        <div class="diagram-section">
+            <h2 class="section-title">1. System Architecture Overview</h2>
+            
+            <div class="description">
+                <strong>Purpose:</strong> Shows the complete system layers from client to database, including all major components and how they interact.
+            </div>
+
+            <div class="mermaid">
+graph TB
+    subgraph "Client Layer"
+        A1["🌐 Web Browser"]
+        A2["Employee Dashboard"]
+        A3["Manager Dashboard"]
+        A4["Admin Dashboard"]
+    end
+
+    subgraph "Frontend - Next.js 14 + React"
+        F1["Next.js App Router"]
+        F2["React Components<br/>Goal Editor<br/>Dashboard Shell<br/>UI Primitives"]
+        F3["Tailwind CSS<br/>Styling"]
+        F4["Recharts<br/>Analytics Charts"]
+    end
+
+    subgraph "Authentication"
+        AUTH["NextAuth.js 4.24<br/>JWT Sessions<br/>Credentials Provider"]
+        SESS["Session Storage<br/>Secure Cookies"]
+    end
+
+    subgraph "Backend - Next.js API Routes"
+        API1["Goal Management<br/>/api/goals<br/>/api/goals/save<br/>/api/goals/submit"]
+        API2["Manager Approvals<br/>/api/manager/approve<br/>/api/manager/team<br/>/api/manager/checkins"]
+        API3["Admin Functions<br/>/api/admin/users<br/>/api/admin/windows<br/>/api/admin/unlock<br/>/api/admin/shared-goals"]
+        API4["Check-ins & Progress<br/>/api/checkins<br/>/api/analytics"]
+        API5["Reporting<br/>/api/reports/export<br/>/api/audit"]
+    end
+
+    subgraph "Business Logic Layer"
+        BL1["Goals Service<br/>Validation<br/>Scoring Logic"]
+        BL2["Progress Engine<br/>Min/Max/Timeline<br/>Zero-based Formulas"]
+        BL3["Schedule Enforcement<br/>Window Checks<br/>Period Validation"]
+        BL4["Audit Service<br/>Change Tracking<br/>Before/After Snapshots"]
+    end
+
+    subgraph "Data Access Layer - Prisma ORM"
+        ORM["Prisma Client<br/>Type-safe Queries<br/>Schema Migrations"]
+    end
+
+    subgraph "Database - PostgreSQL"
+        DB1["Core Tables"]
+        DB2["User<br/>Department<br/>Cycle<br/>CheckInWindow"]
+        DB3["Goal Data"]
+        DB4["GoalSheet<br/>Goal<br/>SharedGoal<br/>QuarterlyCheckIn"]
+        DB5["Audit & History"]
+        DB6["AuditLog<br/>Notification<br/>Escalation"]
+    end
+
+    subgraph "External Services"
+        EXT1["Deployment - Vercel<br/>Serverless Functions"]
+        EXT2["Database - Neon<br/>PostgreSQL Cloud"]
+        EXT3["File Export<br/>SheetJS/XLSX"]
+    end
+
+    subgraph "Data Flow & Access Control"
+        RBAC["Role-Based Access Control<br/>EMPLOYEE | MANAGER | ADMIN<br/>API Route Protection"]
+        MIDDLEWARE["Middleware<br/>Auth Check<br/>Session Validation"]
+    end
+
+    A1 --> F1
+    F1 --> F2
+    F1 --> F3
+    F2 --> F4
+    
+    A2 --> AUTH
+    A3 --> AUTH
+    A4 --> AUTH
+    AUTH --> SESS
+    
+    F1 --> MIDDLEWARE
+    MIDDLEWARE --> RBAC
+    RBAC --> API1 & API2 & API3 & API4 & API5
+    
+    API1 --> BL1
+    API2 --> BL1
+    API3 --> BL1
+    API4 --> BL2 & BL3
+    API5 --> BL4
+    
+    BL1 --> ORM
+    BL2 --> ORM
+    BL3 --> ORM
+    BL4 --> ORM
+    
+    ORM --> DB1
+    DB1 --> DB2 & DB3 & DB5
+    DB2 --> DB4
+    DB5 --> DB6
+    
+    ORM --> EXT2
+    EXT1 -.->|Hosts| F1 & API1
+    EXT2 -.->|Stores| ORM
+    EXT3 -.->|Exports| API5
+    
+    style A1 fill:#e1f5ff
+    style F1 fill:#fff3e0
+    style AUTH fill:#f3e5f5
+    style API1 fill:#e8f5e9
+    style BL1 fill:#fce4ec
+    style ORM fill:#f1f8e9
+    style DB1 fill:#e0f2f1
+    style EXT1 fill:#ede7f6
+            </div>
+
+            <div class="key-points">
+                <strong>Key Components:</strong>
+                <ul>
+                    <li><strong>Client Layer:</strong> Web browsers accessing 3 role-specific dashboards</li>
+                    <li><strong>Frontend:</strong> Next.js 14 with React 18, Tailwind styling, Recharts analytics</li>
+                    <li><strong>Authentication:</strong> NextAuth.js handling JWT sessions and credentials</li>
+                    <li><strong>Backend:</strong> Serverless API routes for goals, approvals, check-ins, admin, reports</li>
+                    <li><strong>Business Logic:</strong> Services for validation, scoring, scheduling, auditing</li>
+                    <li><strong>Data Layer:</strong> Prisma ORM managing PostgreSQL database</li>
+                    <li><strong>Deployment:</strong> Vercel (app), Neon (database), SheetJS (exports)</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Diagram 2: Data Flow -->
+        <div class="diagram-section">
+            <h2 class="section-title">2. Complete Data Flow Lifecycle</h2>
+            
+            <div class="description">
+                <strong>Purpose:</strong> Illustrates the complete journey of data from goal creation through approval, check-ins, and analytics. Shows how each phase connects to the next.
+            </div>
+
+            <div class="mermaid">
+graph LR
+    subgraph "1. Goal Creation"
+        E1["Employee<br/>Creates Goal"]
+        E1 -->|POST /api/goals/save| API1["Backend Validates<br/>Weightage Rules"]
+        API1 -->|Save to DB| DB1["GoalSheet<br/>Status: DRAFT"]
+    end
+
+    subgraph "2. Goal Submission"
+        DB1 -->|Employee clicks Submit| E2["POST /api/goals/submit"]
+        E2 -->|Validate: 100% total| API2["Check Rules"]
+        API2 -->|Valid| DB2["GoalSheet<br/>Status: SUBMITTED"]
+        DB2 -->|Create Notification| N1["Notify Manager"]
+        N1 -->|Audit Log| AUDIT1["Action: SUBMIT"]
+    end
+
+    subgraph "3. Manager Approval"
+        N1 -->|Manager Views| M1["GET /api/manager/team"]
+        M1 -->|Shows Pending| M2["Manager Reviews<br/>& Approves"]
+        M2 -->|POST /api/manager/approve| API3["Backend Validates<br/>Weightage"]
+        API3 -->|Valid| DB3["GoalSheet<br/>Status: APPROVED<br/>isLocked: true"]
+        DB3 -->|Create Notification| N2["Notify Employee"]
+        DB3 -->|Audit Log| AUDIT2["Action: APPROVE"]
+    end
+
+    subgraph "4. Check-in Phase"
+        N2 -->|Goals Now Locked| E3["Employee in<br/>Quarterly Window"]
+        E3 -->|Enter Actual Value| E4["POST /api/checkins"]
+        E4 -->|calculateProgressScore| ENGINE["Progress Engine<br/>Min/Max/Timeline/Zero"]
+        ENGINE -->|Auto-calculate| SCORE["progressScore %"]
+        SCORE -->|Save| DB4["QuarterlyCheckIn<br/>actualAchievement<br/>progressScore"]
+        DB4 -->|If Shared Goal| SYNC["Sync Achievement<br/>to Linked Goals"]
+    end
+
+    subgraph "5. Manager Check-in"
+        DB4 -->|Manager views| M3["GET /api/checkins"]
+        M3 -->|Sees actual vs target| M4["Manager Adds<br/>Comment"]
+        M4 -->|POST /api/checkins| API4["Update managerComment"]
+        API4 -->|Save| DB5["QuarterlyCheckIn<br/>managerComment"]
+        DB5 -->|Audit Log| AUDIT3["Action: CHECK_IN"]
+    end
+
+    subgraph "6. Analytics & Export"
+        DB4 -->|Query Multiple| API5["GET /api/analytics"]
+        API5 -->|Aggregate| CALC["Calculate QoQ Trends<br/>Heatmaps<br/>Manager Stats"]
+        CALC -->|Render| CHARTS["Recharts Visualizations"]
+        
+        DB4 -->|Export Data| API6["GET /api/reports/export"]
+        API6 -->|Format| EXPORT["SheetJS<br/>CSV or XLSX"]
+        EXPORT -->|Download| HR["HR Team<br/>Uses Report"]
+    end
+
+    subgraph "7. Audit Trail"
+        AUDIT1 --> AUDITDB["AuditLog<br/>userId, action<br/>beforeData, afterData<br/>timestamp"]
+        AUDIT2 --> AUDITDB
+        AUDIT3 --> AUDITDB
+        AUDITDB -->|Admin Views| ADM["GET /api/audit"]
+    end
+
+    style E1 fill:#e8f5e9
+    style M1 fill:#f3e5f5
+    style M2 fill:#f3e5f5
+    style E3 fill:#e8f5e9
+    style E4 fill:#e8f5e9
+    style ENGINE fill:#fff3e0
+    style DB1 fill:#e0f2f1
+    style DB2 fill:#e0f2f1
+    style DB3 fill:#e0f2f1
+    style DB4 fill:#e0f2f1
+    style CHARTS fill:#fce4ec
+    style EXPORT fill:#fce4ec
+    style AUDITDB fill:#f1f8e9
+            </div>
+
+            <div class="key-points">
+                <strong>7-Phase Workflow:</strong>
+                <ul>
+                    <li><strong>Phase 1:</strong> Employee creates goal (draft saved)</li>
+                    <li><strong>Phase 2:</strong> Employee submits (validates 100% weightage, notifies manager)</li>
+                    <li><strong>Phase 3:</strong> Manager approves/rejects (locks or returns for rework)</li>
+                    <li><strong>Phase 4:</strong> Employee logs quarterly progress (score auto-calculated)</li>
+                    <li><strong>Phase 5:</strong> Manager adds feedback comments</li>
+                    <li><strong>Phase 6:</strong> Analytics aggregated and reports exported</li>
+                    <li><strong>Phase 7:</strong> All changes audited with before/after snapshots</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Technology Stack Summary -->
+        <div class="diagram-section">
+            <h2 class="section-title">3. Technology Stack Summary</h2>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Layer</th>
+                        <th>Technology</th>
+                        <th>Version</th>
+                        <th>Purpose</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Frontend</strong></td>
+                        <td>Next.js</td>
+                        <td>14.2.35</td>
+                        <td>Full-stack framework, API routes, SSR</td>
+                    </tr>
+                    <tr>
+                        <td><strong>UI Library</strong></td>
+                        <td>React</td>
+                        <td>18</td>
+                        <td>Component-based UI</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Styling</strong></td>
+                        <td>Tailwind CSS</td>
+                        <td>3.4.19</td>
+                        <td>Utility-first, responsive design</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Charts</strong></td>
+                        <td>Recharts</td>
+                        <td>3.8.1</td>
+                        <td>Analytics visualizations</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Authentication</strong></td>
+                        <td>NextAuth.js</td>
+                        <td>4.24.14</td>
+                        <td>JWT sessions, credentials provider</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Database</strong></td>
+                        <td>PostgreSQL</td>
+                        <td>14+</td>
+                        <td>ACID-compliant relational DB</td>
+                    </tr>
+                    <tr>
+                        <td><strong>ORM</strong></td>
+                        <td>Prisma</td>
+                        <td>5.22.0</td>
+                        <td>Type-safe queries, migrations</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Export</strong></td>
+                        <td>SheetJS</td>
+                        <td>0.18.5</td>
+                        <td>CSV & XLSX generation</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Hashing</strong></td>
+                        <td>bcryptjs</td>
+                        <td>3.0.3</td>
+                        <td>Password hashing</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Hosting</strong></td>
+                        <td>Vercel</td>
+                        <td>Latest</td>
+                        <td>Serverless deployment</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Key Features -->
+        <div class="diagram-section">
+            <h2 class="section-title">4. Core Features by Layer</h2>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Component</th>
+                        <th>Features</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Employee Dashboard</strong></td>
+                        <td>Goal creation (max 8), weight validation, submission, quarterly check-ins</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Manager Dashboard</strong></td>
+                        <td>Team oversight, goal approval/rejection, inline editing, check-in management</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Admin Dashboard</strong></td>
+                        <td>User management, cycle configuration, window toggling, reporting, audit logs</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Progress Scoring</strong></td>
+                        <td>4 algorithms (MIN, MAX, TIMELINE, ZERO-BASED) with auto-calculation</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Validation</strong></td>
+                        <td>100% weightage total, 10% minimum per goal, max 8 goals per sheet</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Schedule Enforcement</strong></td>
+                        <td>Quarterly windows (May/Jul/Oct/Jan/Mar-Apr), demo mode override</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Shared Goals</strong></td>
+                        <td>Departmental KPIs, locked targets, adjustable weightage, achievement sync</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Analytics</strong></td>
+                        <td>QoQ trends, heatmaps, thrust area distribution, manager effectiveness</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Reporting</strong></td>
+                        <td>CSV & XLSX export, achievement reports, filterable data</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Audit Trail</strong></td>
+                        <td>Complete change history, before/after snapshots, user attribution, timestamps</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Database Schema -->
+        <div class="diagram-section">
+            <h2 class="section-title">5. Database Schema Relationships</h2>
+            
+            <div class="description">
+                Core entities and their relationships in the PostgreSQL database managed by Prisma ORM.
+            </div>
+
+            <pre style="background: #f5f5f5; padding: 15px; border-radius: 4px; overflow-x: auto;">
+User (Employee/Manager/Admin)
+├── Department (organizational unit)
+├── Manager (reporting hierarchy)
+├── GoalSheet (1 per user per cycle)
+│   ├── Goals (1-8 per sheet)
+│   │   ├── QuarterlyCheckIn (Q1-Q4 progress)
+│   │   └── SharedGoal reference
+│   └── Approver (manager who approved)
+├── SharedGoals (departmental KPIs)
+│   └── Goals linked across employees
+├── AuditLogs (post-lock changes)
+├── Notifications (in-app alerts)
+└── Escalations (workflow escalations)
+
+Cycle (annual performance year)
+├── CheckInWindows (GOAL_SETTING, Q1-Q4)
+└── GoalSheets & SharedGoals (linked to cycle)
+
+Relationships:
+• User → Department (many:1)
+• User → Manager (many:1, self-referential)
+• GoalSheet → Goal (1:many)
+• Goal → QuarterlyCheckIn (1:many)
+• Goal → SharedGoal (many:1)
+• Cycle → CheckInWindow (1:many)
+            </pre>
+        </div>
+
+        <!-- Deployment Architecture -->
+        <div class="diagram-section">
+            <h2 class="section-title">6. Deployment Architecture</h2>
+            
+            <div class="key-points">
+                <strong>Development Environment:</strong>
+                <ul>
+                    <li>Node.js 18+ on local machine</li>
+                    <li>PostgreSQL running in Docker (docker compose up -d)</li>
+                    <li>Next.js dev server (npm run dev) on http://localhost:3000</li>
+                    <li>Hot reload on file changes</li>
+                    <li>Database migrations via Prisma</li>
+                </ul>
+            </div>
+
+            <div class="key-points">
+                <strong>Production Environment:</strong>
+                <ul>
+                    <li>Frontend & Backend: <strong>Vercel</strong> (serverless functions, auto-scaling, global CDN)</li>
+                    <li>Database: <strong>Neon PostgreSQL</strong> (managed cloud, connection pooling)</li>
+                    <li>CI/CD: GitHub push → Vercel build → Deploy</li>
+                    <li>Environment: Configured in Vercel dashboard (DATABASE_URL, NEXTAUTH_SECRET)</li>
+                    <li>Regions: 40+ worldwide for low latency</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p><strong>AtomGoals - System Architecture Documentation</strong></p>
+            <p>Atomberg ATOMQUEST Hackathon 1.0 | May 17, 2026</p>
+            <p>For more information, see README.md and ARCHITECTURE.md in the project repository</p>
+        </div>
+    </div>
+
+    <div class="button-group">
+        <button onclick="window.print()">🖨️ Print / Save as PDF</button>
+        <button onclick="downloadHTML()">💾 Download HTML</button>
+    </div>
+
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+        
+        function downloadHTML() {
+            const element = document.documentElement;
+            const html = element.outerHTML;
+            const blob = new Blob([html], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'AtomGoals_Architecture_Diagrams.html';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    </script>
+</body>
+</html>
