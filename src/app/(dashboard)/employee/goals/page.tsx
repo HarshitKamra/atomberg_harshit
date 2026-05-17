@@ -56,8 +56,8 @@ export default function EmployeeGoalsPage() {
 
   return (
     <DashboardShell
-      title="My Goals"
-      subtitle="Create and manage your goal sheet for the current cycle"
+      title="My Goals & Tasks"
+      subtitle="Add goals, set targets and weightage (must total 100%), then submit for manager approval"
     >
       {sheet && (
         <div className="mb-4">

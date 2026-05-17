@@ -14,6 +14,7 @@ import {
   Settings,
   LogOut,
   Network,
+  UserPlus,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -22,12 +23,13 @@ import type { Role } from "@/lib/db-enums";
 const navByRole: Record<Role, { href: string; label: string; icon: React.ElementType }[]> = {
   EMPLOYEE: [
     { href: "/employee", label: "Dashboard", icon: LayoutDashboard },
-    { href: "/employee/goals", label: "My Goals", icon: Target },
+    { href: "/employee/goals", label: "My Goals / Tasks", icon: Target },
     { href: "/employee/checkins", label: "Check-ins", icon: CheckSquare },
   ],
   MANAGER: [
     { href: "/manager", label: "Team Dashboard", icon: LayoutDashboard },
     { href: "/manager/approvals", label: "Approvals", icon: Target },
+    { href: "/manager/assign", label: "Assign Goals", icon: UserPlus },
     { href: "/manager/checkins", label: "Check-ins", icon: CheckSquare },
     { href: "/analytics", label: "Analytics", icon: BarChart3 },
   ],

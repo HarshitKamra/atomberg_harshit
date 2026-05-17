@@ -34,6 +34,11 @@ export default function EmployeeDashboard() {
     (g.checkIns ?? []).map((c) => c.progressScore ?? 0)
   );
   const avg = scores.length ? scores.reduce((a, b) => a + b, 0) / scores.length : 0;
+  const canAddGoals =
+    sheet &&
+    !sheet.isLocked &&
+    sheet.status !== "APPROVED" &&
+    sheet.status !== "SUBMITTED";
 
   return (
     <DashboardShell
@@ -84,9 +89,15 @@ export default function EmployeeDashboard() {
           </CardContent>
         </Card>
       </div>
-      <div className="mt-8 flex gap-4">
+      {sheet?.isLocked && (
+        <div className="mt-6 rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm text-slate-600">
+          Your goals are <strong>approved and locked</strong>. To add new tasks, ask HR to unlock
+          your sheet.
+        </div>
+      )}
+      <div className="mt-8 flex flex-wrap gap-4">
         <Link href="/employee/goals">
-          <Button>Manage Goals</Button>
+          <Button>{canAddGoals ? "+ Add Goal / Task" : "View My Goals"}</Button>
         </Link>
         <Link href="/employee/checkins">
           <Button variant="outline">Quarterly Check-ins</Button>

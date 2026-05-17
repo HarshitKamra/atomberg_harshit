@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input, Select, Textarea } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -38,6 +38,10 @@ export function GoalEditor({
   const [goals, setGoals] = useState<GoalDraft[]>(initial);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    setGoals(initial);
+  }, [initial]);
 
   const totalWeight = goals.reduce((s, g) => s + (g.weightage || 0), 0);
 
@@ -83,6 +87,12 @@ export function GoalEditor({
 
   return (
     <div className="animate-fade-in space-y-6">
+      {!canEdit && (
+        <div className="rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
+          <strong>Goal sheet is locked</strong> ({sheetStatus}). You cannot add tasks until your
+          manager returns it for rework or HR unlocks it.
+        </div>
+      )}
       <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
             <p className="text-sm text-slate-500">
@@ -105,7 +115,7 @@ export function GoalEditor({
         {canEdit && (
           <div className="flex gap-2">
             <Button variant="outline" onClick={addGoal} disabled={goals.length >= MAX_GOALS}>
-              <Plus className="h-4 w-4" /> Add Goal
+              <Plus className="h-4 w-4" /> Add Goal / Task
             </Button>
             <Button onClick={handleSave} disabled={saving}>
               {saving ? "Saving..." : "Save Draft"}
@@ -127,8 +137,14 @@ export function GoalEditor({
 
       {goals.length === 0 ? (
         <Card>
-          <CardContent className="py-12 text-center text-slate-500">
-            No goals yet. Add your first goal to get started.
+          <CardContent className="py-12 text-center">
+            <p className="text-slate-500">No goals or tasks yet.</p>
+            {canEdit && (
+              <Button className="mt-4" onClick={addGoal}>
+                <Plus className="mr-2 h-4 w-4" />
+                Add your first goal
+              </Button>
+            )}
           </CardContent>
         </Card>
       ) : (
