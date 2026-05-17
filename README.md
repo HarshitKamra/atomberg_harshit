@@ -19,7 +19,7 @@ Enterprise-grade goal management platform built for **Atomberg ATOMQUEST Hackath
 |-------|------------|
 | Frontend | Next.js 14, React, Tailwind CSS |
 | Backend | Next.js API Routes |
-| Database | SQLite (dev) / PostgreSQL (prod) |
+| Database | PostgreSQL (Neon / Docker locally) |
 | ORM | Prisma |
 | Auth | NextAuth.js (credentials) |
 | Charts | Recharts |
@@ -27,17 +27,18 @@ Enterprise-grade goal management platform built for **Atomberg ATOMQUEST Hackath
 ## Quick Start
 
 ```bash
-# Install dependencies
 npm install
 
-# Setup database & seed demo data
-npm run db:setup
+# Start Postgres (Docker) — or use a Neon URL in .env
+docker compose up -d
 
-# Start dev server
+npm run db:setup
 npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000)
+
+Copy `.env.example` → `.env` if you don't have one yet.
 
 ## Demo Credentials
 
@@ -51,42 +52,20 @@ Use **Quick demo login** buttons on the login page for one-click access.
 
 ## Environment Variables
 
-Copy `.env.example` to `.env`:
+See `.env.example`. Required:
 
-```env
-DATABASE_URL="file:./dev.db"
-NEXTAUTH_URL="http://localhost:3000"
-NEXTAUTH_SECRET="your-secret"
-DEMO_MODE="true"
-```
+| Variable | Purpose |
+|----------|---------|
+| `DATABASE_URL` | PostgreSQL connection string |
+| `NEXTAUTH_URL` | App URL (local or Vercel) |
+| `NEXTAUTH_SECRET` | Session signing secret |
+| `DEMO_MODE` | `true` = all quarterly windows open (demo) |
 
-## PostgreSQL (Production)
+## Deploy to Vercel (live demo)
 
-1. Change `provider` in `prisma/schema.prisma` to `postgresql`
-2. Set `DATABASE_URL` to your Postgres connection string
-3. Run `npm run db:setup`
+**Full step-by-step:** see **[DEPLOY.md](./DEPLOY.md)**
 
-Or use Docker:
-
-```bash
-docker compose up -d
-```
-
-## Deployment
-
-### Vercel (recommended)
-
-1. Push to GitHub
-2. Import project in Vercel
-3. Add env vars: `DATABASE_URL`, `NEXTAUTH_SECRET`, `NEXTAUTH_URL`
-4. Use Neon/Supabase for PostgreSQL
-5. Run migrations: `npx prisma db push`
-
-### Azure
-
-- App Service for Next.js
-- Azure Database for PostgreSQL
-- Entra ID for SSO (bonus feature)
+Summary: Neon (free Postgres) → seed DB once → GitHub → Vercel → set env vars → redeploy with `NEXTAUTH_URL`.
 
 ## Project Structure
 

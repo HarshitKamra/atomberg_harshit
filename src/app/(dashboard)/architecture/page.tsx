@@ -15,7 +15,7 @@ export default function ArchitecturePage() {
             <CardContent className="space-y-2 text-sm text-slate-600">
               <p><strong>Frontend:</strong> Next.js 14, React, Tailwind CSS, Recharts</p>
               <p><strong>Backend:</strong> Next.js API Routes, Prisma ORM</p>
-              <p><strong>Database:</strong> SQLite (dev) / PostgreSQL (production)</p>
+              <p><strong>Database:</strong> PostgreSQL (Neon + Prisma)</p>
               <p><strong>Auth:</strong> NextAuth.js (JWT, credentials)</p>
               <p><strong>Export:</strong> SheetJS (xlsx) for CSV/Excel reports</p>
             </CardContent>
